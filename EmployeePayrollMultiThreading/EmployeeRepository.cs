@@ -8,8 +8,7 @@ namespace EmployeePayrollMultiThreading
 {
     public class EmployeeRepository
     { 
-        public static string connectionString = @"Data Source=DESKTOP-D8GLB66\SQLEXPRESS;Initial Catalog=Payroll_Service;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"; //Specifying the connection string from the sql server connection.
-
+        public static string connectionString = @"Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Payroll_Service_ADO_NET;Integrated Security=True";
         SqlConnection connection = new SqlConnection(connectionString);  
 
         public bool DataBaseConnection()
