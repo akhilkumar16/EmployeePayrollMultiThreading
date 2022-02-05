@@ -60,15 +60,34 @@ namespace EmployeePayrollMultiThreading
                 thread.Start();
             });
         }
+        //*UC3:- Ability to add multiple employee to payroll DB using Threads
+        public void AddEmployeeListToDataBaseWithThreadSynchronization(List<EmployeeModel> employeeList)
+        {
+            employeeList.ForEach(employeeData =>
+            {
+                Task thread = new Task(() => 
+                {
+                    lock (employeeData)
+                    {
+                        Console.WriteLine("Employee Being added" + employeeData.EmployeeName); 
+                        Console.WriteLine("Current thread id: " + Thread.CurrentThread.ManagedThreadId);  
+                        this.AddEmployeeToDataBase(employeeData);
+                        Console.WriteLine("Employee added:" + employeeData.EmployeeName); 
+                    }
+                });
+                thread.Start();
+                thread.Wait();
+            });
+        }
         public bool AddEmployeeToDataBase(EmployeeModel model)
         {
             try
             {
                 using (connection)
                 {
-                    SqlCommand command = new SqlCommand("dbo.SqlProcedureName", this.connection);  
-                    command.CommandType = CommandType.StoredProcedure; 
+                    SqlCommand command = new SqlCommand("dbo.SqlProcedureName", this.connection);
 
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@EmployeeName", model.EmployeeName);
                     command.Parameters.AddWithValue("@PhoneNumber", model.PhoneNumber);
                     command.Parameters.AddWithValue("@Address", model.Address);
